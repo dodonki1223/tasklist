@@ -53,9 +53,16 @@ class TasksController extends Controller
     public function store(Request $request)
     {
 
+        // 入力値のチェック
+        $this->validate($request, [
+            'content' => 'required|max:255',
+            'status'  => 'required|max:10',
+        ]);
+
         // フォームで入力された内容をtasksテーブルに登録する
         $task = new Task;
         $task->content = $request->content;
+        $task->status = $request->status;
         $task->save();
 
         // indexページに飛ぶ
@@ -109,11 +116,18 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
 
+        // 入力値のチェック
+        $this->validate($request, [
+            'content' => 'required|max:255',
+            'status'  => 'required|max:10',
+        ]);
+
         // 対象IDのタスクを取得
         $task = Task::find($id);
 
         // 編集フォームで入力されたタスク更新
         $task->content = $request->content;
+        $task->status  = $request->status;
         $task->save();
 
         return redirect('/');
